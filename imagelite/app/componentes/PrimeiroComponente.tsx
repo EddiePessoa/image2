@@ -1,10 +1,21 @@
 'use client';
 
-export function PrimeiroComponente(){
+import { createElement } from "react";
 
+export function PrimeiroComponente(){
+/*
   function clique() { 
     console.log('Você clicou no botão!');
     alert('Você clicou no botão!');
+
+    createElement('h1', null, 'Você clicou no botão!');
+  } */
+
+  const clique = () => {
+    console.log('Você clicou no botão!');
+    alert('Você clicou no botão!');
+
+    return <p>CAsa de bala</p>
   }
 
   return(
