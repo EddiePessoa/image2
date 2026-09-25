@@ -1,37 +1,52 @@
-    package io.spring.image.demo.domain.enums;
+package io.spring.image.demo.domain.enums;
 
-import io.spring.image.demo.domain.entity.Image;
-import lombok.Getter;
 import org.springframework.http.MediaType;
 
-import java.util.Arrays;
+public enum ImageExtension {
 
-    public enum ImageExtension {
-    PNG (MediaType.IMAGE_PNG),
-    JPG (MediaType.IMAGE_JPEG),
-    GIF (MediaType.IMAGE_GIF),
+    PNG(MediaType.IMAGE_PNG),
+    JPG(MediaType.IMAGE_JPEG),
     JPEG(MediaType.IMAGE_JPEG);
-//    WebP (MediaType.IMAGE)
 
-    @Getter
-    private MediaType mediaType;
+    private final MediaType mediaType;
 
-    ImageExtension(MediaType mediaType){
+    ImageExtension(MediaType mediaType) {
         this.mediaType = mediaType;
     }
 
-    public static ImageExtension valueOf(MediaType mediaType){
-        return Arrays.stream(values())
-                .filter(ie-> ie.mediaType.equals(mediaType))
-                .findFirst()
-                .orElse(null);
+    public MediaType getMediaType() {
+        return mediaType;
     }
 
-    public static ImageExtension ofName(String name){
-            return Arrays.stream(values())
-                    .filter(ie-> ie.name().equals(name))
-                    .findFirst()
-                    .orElse(null);
+    public static ImageExtension fromMimeType(String mimeType) {
+
+        if (mimeType == null) {
+            throw new IllegalArgumentException("MimeType não pode ser nulo");
+        }
+
+        switch (mimeType.toLowerCase()) {
+            case "image/png":
+                return PNG;
+
+            case "image/jpg":
+                return JPG;
+
+            case "image/jpeg":
+                return JPEG;
+
+            default:
+                throw new IllegalArgumentException(
+                        "Tipo de imagem não suportado: " + mimeType
+                );
+        }
     }
 
+    public static ImageExtension ofName(String extension) {
+
+        if (extension == null || extension.isBlank()) {
+            return null;
+        }
+
+        return ImageExtension.valueOf(extension.toUpperCase());
+    }
 }
